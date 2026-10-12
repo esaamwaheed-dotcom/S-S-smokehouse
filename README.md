@@ -34,6 +34,7 @@ python3 -m http.server 8000
 - `inquire.html`, `inquire.js` — inquiry page and its form logic
 - `styles.css` — all styling (brand colors are CSS variables at the top)
 - `main.js` — menu data, animations, smoke shader, forms
+- `assets/photos/` — food photos (placeholders for now; see below)
 - `assets/logo-mark.png`, `assets/favicon.png` — logo cropped from the Instagram profile (swap for the original high-res file when available)
 
 ## To finish before launch
@@ -43,4 +44,4 @@ python3 -m http.server 8000
 - **Copy to confirm**: the stats (14 hrs, 100% post oak) and menu descriptions are concept copy.
 - **Opening date and hours**: shown as "Coming Fall 2026, date and hours announced soon" for now.
 - **Logo**: cropped from the Instagram profile. Swap in the original high-res file when available.
-- **Photos**: drop real food and pit photography in once it exists.
+- **Photos**: the three photos in `assets/photos/` are placeholders the owner supplied for the draft. Replace them with S&S's own photography before launch (keep the same filenames to swap them without code changes).

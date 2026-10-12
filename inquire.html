@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inquire — S&amp;S Smokehouse</title>
+  <meta name="description" content="Catering, private events, and the opening list for S&amp;S Smokehouse, 100% halal Texas BBQ in Richardson, TX." />
+  <meta name="theme-color" content="#0b0907" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page-inquire">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <a href="index.html" class="nav__brand" aria-label="S&amp;S Smokehouse home">
+      <img src="assets/logo-mark.png" alt="" width="40" height="40" />
+      <span>S&amp;S <em>Smokehouse</em></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html#story">Story</a>
+      <a href="index.html#halal">Halal</a>
+      <a href="index.html#pit">The Pit</a>
+      <a href="index.html#menu">Menu</a>
+      <a href="index.html#visit">Visit</a>
+    </nav>
+    <a href="index.html#menu" class="btn btn--small btn--ghost">View menu</a>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <section class="inq-hero">
+      <canvas id="embers" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <p class="kicker">Inquiries &nbsp;·&nbsp; 100% Halal &nbsp;·&nbsp; Richardson, TX</p>
+        <h1>Let's light<br /><em>the pit for you.</em></h1>
+        <p>Catering a wedding, feeding the office, hosting an iftar, or just want to be first through the door? Tell us what you need and the Sire &amp; Sons team will get back to you within 48 hours.</p>
+      </div>
+    </section>
+
+    <section class="inq">
+      <div class="wrap inq__grid">
+        <div>
+          <form class="card form" id="inquiryForm" novalidate>
+            <fieldset class="types">
+              <legend>What can we help with?</legend>
+              <label class="type"><input type="radio" name="type" id="type-catering" value="catering" checked /><span><b>Catering</b><small>Trays, buffets, or a full spread for your event</small></span></label>
+              <label class="type"><input type="radio" name="type" id="type-private" value="private" /><span><b>Private event</b><small>Live pit, carving station, full service</small></span></label>
+              <label class="type"><input type="radio" name="type" id="type-list" value="list" /><span><b>Opening list</b><small>Get the opening date and first-taste invites</small></span></label>
+              <label class="type"><input type="radio" name="type" id="type-general" value="general" /><span><b>General</b><small>Press, partnerships, careers, anything else</small></span></label>
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <legend>About you</legend>
+              <div class="form__row">
+                <label for="f-name"><span>Full name <span class="req">*</span></span><input id="f-name" name="name" required autocomplete="name" placeholder="Your name" /></label>
+                <label for="f-email"><span>Email <span class="req">*</span></span><input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
+              </div>
+              <div class="form__row">
+                <label for="f-phone">Phone<input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="(214) 555-0123" /></label>
+                <label for="f-org" data-for="catering private general">Company / organization<input id="f-org" name="organization" autocomplete="organization" placeholder="Optional" /></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="fieldset" data-for="catering private">
+              <legend>The event</legend>
+              <div class="form__row form__row--3">
+                <label for="f-date"><span>Event date <span class="req">*</span></span><input id="f-date" name="event_date" type="date" /></label>
+                <label for="f-time">Serving time<input id="f-time" name="event_time" type="time" /></label>
+                <label for="f-kind">Occasion
+                  <select id="f-kind" name="occasion">
+                    <option value="">Choose one</option>
+                    <option>Wedding / Walima</option>
+                    <option>Eid gathering</option>
+                    <option>Iftar / Ramadan</option>
+                    <option>Corporate / office</option>
+                    <option>Birthday / graduation</option>
+                    <option>Family reunion</option>
+                    <option>Game day / tailgate</option>
+                    <option>Community / mosque event</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="guests">
+                <div class="guests__top"><label for="f-guests-range"><span>Guest count <span class="req">*</span></span></label><span class="guests__val" id="guestsVal">50</span></div>
+                <input id="f-guests-range" type="range" min="10" max="1000" step="5" value="50" aria-describedby="guestsHint" />
+                <div class="form__row">
+                  <label for="f-guests">Exact count<input id="f-guests" name="guests" type="number" min="10" step="1" value="50" inputmode="numeric" /></label>
+                  <label for="f-location">Venue / city<input id="f-location" name="location" placeholder="e.g. Plano, TX or venue name" /></label>
+                </div>
+                <p class="muted" id="guestsHint">Over 1,000 guests? Type the number in and we'll plan it with you.</p>
+              </div>
+
+              <div class="chip-group">
+                <p>Service style</p>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="service" id="svc-dropoff" value="Drop-off trays" /><span>Drop-off trays</span></label>
+                  <label class="chip"><input type="radio" name="service" id="svc-buffet" value="Full-service buffet" /><span>Full-service buffet</span></label>
+                  <label class="chip"><input type="radio" name="service" id="svc-pit" value="Live pit &amp; carving station" /><span>Live pit &amp; carving station</span></label>
+                  <label class="chip"><input type="radio" name="service" id="svc-unsure" value="Not sure yet" /><span>Not sure yet</span></label>
+                </div>
+              </div>
+
+              <div class="chip-group">
+                <p>What's on the tray? <span class="muted">(pick any)</span></p>
+                <div class="chips" id="menuChips"></div>
+              </div>
+
+              <div class="form__row">
+                <label for="f-budget">Budget per guest
+                  <select id="f-budget" name="budget">
+                    <option value="">Choose a range</option>
+                    <option>Under $20</option>
+                    <option>$20 – $35</option>
+                    <option>$35 – $50</option>
+                    <option>$50+</option>
+                    <option>Not sure yet</option>
+                  </select>
+                </label>
+                <label for="f-heard">How did you hear about us?
+                  <select id="f-heard" name="heard_from">
+                    <option value="">Choose one</option>
+                    <option>Instagram</option>
+                    <option>Friend / family</option>
+                    <option>Google</option>
+                    <option>Event / pop-up</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <legend><span data-label-for="catering private">Anything else we should know?</span><span data-label-for="list">Anything you're most excited to try?</span><span data-label-for="general"><span>Your message <span class="req">*</span></span></span></legend>
+              <label for="f-details" class="sr-only">Details</label>
+              <textarea id="f-details" name="details" rows="4" placeholder="Dietary needs, setup details, timing, questions…"></textarea>
+            </fieldset>
+
+            <button class="btn btn--full" type="submit" id="submitBtn">Send inquiry</button>
+            <p class="form__msg" id="formMsg" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="card done" id="done" hidden>
+            <img src="assets/logo-mark.png" alt="" />
+            <p class="kicker">Inquiry received</p>
+            <h2 id="doneTitle">The fire's lit.</h2>
+            <p id="doneText">Thanks for reaching out. The Sire &amp; Sons team will get back to you within 48 hours.</p>
+            <p class="muted" id="doneNote" hidden></p>
+            <div class="done__actions">
+              <a href="index.html#menu" class="btn">Browse the menu</a>
+              <button type="button" class="btn btn--ghost" id="again">Send another</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card summary" aria-label="Your inquiry summary">
+          <p class="kicker" style="margin:0">Your inquiry</p>
+          <h3 id="sumTitle">Catering</h3>
+          <dl id="sumList"></dl>
+          <div class="summary__halal"><img src="assets/logo-mark.png" alt="" /> Everything we cook is 100% halal. No pork, ever.</div>
+          <p class="summary__contact">S&amp;S Smokehouse<br /><strong>109 Beltline Road, Richardson, TX</strong><br />Coming Fall 2026</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="visit">
+    <div class="wrap footer__grid">
+      <div>
+        <p class="kicker">Visit</p>
+        <p class="footer__big">109 Beltline Road<br />Richardson, TX</p>
+        <a class="footer__link" href="https://www.google.com/maps/search/?api=1&amp;query=109+Beltline+Road+Richardson+TX" target="_blank" rel="noopener">Get directions ↗</a>
+      </div>
+      <div>
+        <p class="kicker">Opening</p>
+        <p>Coming Fall 2026</p>
+        <p class="muted">Date and hours announced soon.</p>
+      </div>
+      <div>
+        <p class="kicker">Follow the smoke</p>
+        <a class="footer__ig" href="https://instagram.com/sireandsons" target="_blank" rel="noopener">@sireandsons ↗</a>
+      </div>
+    </div>
+    <div class="footer__word" aria-hidden="true">SIRE&nbsp;&amp;&nbsp;SONS</div>
+    <div class="wrap footer__base">
+      <span>© <span id="year">2026</span> S&amp;S Smokehouse</span>
+      <span>100% Halal · Generational BBQ · Texas Smoke · Live Fire</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="inquire.js"></script>
+</body>
+</html>

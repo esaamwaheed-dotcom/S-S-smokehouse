@@ -2,16 +2,14 @@
 (() => {
   "use strict";
 
-  // Where form submissions go. Leave empty to show the on-page confirmation only (demo mode).
-  // Set to e.g. "catering@yourdomain.com" to open the visitor's email app with the details filled in.
-  const CONTACT_EMAIL = "";
-
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
   /* ------------------------------------------------------------------ */
   /* Menu data (from the S&S menu sheets)                                */
+  /* Add a price to any item with  p: "$12"  or  p: "$28 / lb"  and it   */
+  /* shows on the menu automatically.                                    */
   /* ------------------------------------------------------------------ */
   const MENU = [
     {
@@ -76,9 +74,12 @@
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+  window.SS_MENU = MENU;
+
   function renderMenu() {
     const tabs = $("#menuTabs");
     const panels = $("#menuPanels");
+    if (!tabs || !panels) return;
     MENU.forEach((cat, ci) => {
       const tab = document.createElement("button");
       tab.className = "tab";
@@ -102,8 +103,9 @@
           ${cat.items.map((it, i) => {
             const tag = it.soon ? `<span class="tag tag--soon">Coming soon</span>`
               : it.t === "sig" ? `<span class="tag tag--sig">Signature</span>`
-              : it.t === "pit" ? `<span class="tag tag--pit">Pitmaster's pick</span>` : "<span></span>";
-            return `<article class="item${it.soon ? " item--soon" : ""}" style="--i:${i}"><h4>${esc(it.n)}</h4>${tag}<p>${esc(it.d)}</p></article>`;
+              : it.t === "pit" ? `<span class="tag tag--pit">Pitmaster's pick</span>` : "";
+            const price = it.p ? `<span class="item__price">${esc(it.p)}</span>` : "";
+            return `<article class="item${it.soon ? " item--soon" : ""}" style="--i:${i}"><h4>${esc(it.n)}</h4><div class="item__meta">${tag}${price}</div><p>${esc(it.d)}</p></article>`;
           }).join("")}
         </div>`;
       panels.appendChild(panel);
@@ -153,6 +155,7 @@
   /* WebGL smoke                                                          */
   /* ------------------------------------------------------------------ */
   function smoke(canvas) {
+    if (!canvas) return;
     const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false });
     if (!gl) return;
     const vs = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
@@ -229,6 +232,7 @@
   /* Embers                                                               */
   /* ------------------------------------------------------------------ */
   function embers(canvas, density = 1) {
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx || reduceMotion) return;
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -287,6 +291,7 @@
 
     const pit = $("#pit"), track = $("#pitTrack"), prog = $("#pitProgress");
     const pitUpdate = () => {
+      if (!pit) return;
       const rect = pit.getBoundingClientRect();
       const total = pit.offsetHeight - innerHeight;
       const t = Math.min(1, Math.max(0, -rect.top / total));
@@ -296,6 +301,7 @@
     };
     // Shrink the pinned section's scroll length to match how wide the track actually is.
     const pitSize = () => {
+      if (!pit) return;
       const dist = Math.max(0, track.scrollWidth - innerWidth);
       pit.style.height = `${innerHeight + dist * 1.1}px`;
       pitUpdate();
@@ -365,42 +371,11 @@
     loop();
   }
 
-  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-  function forms() {
-    const cf = $("#cateringForm");
-    cf.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const msg = $(".form__msg", cf);
-      const name = cf.name.value.trim(), email = cf.email.value.trim();
-      cf.name.classList.toggle("is-invalid", !name);
-      cf.email.classList.toggle("is-invalid", !validEmail(email));
-      if (!name || !validEmail(email)) { msg.textContent = "Add your name and a valid email so we can reach you."; return; }
-      if (CONTACT_EMAIL) {
-        const body = `Name: ${name}\nEmail: ${email}\nDate: ${cf.date.value}\nGuests: ${cf.guests.value}\n\n${cf.details.value}`;
-        location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Catering request — " + name)}&body=${encodeURIComponent(body)}`;
-      }
-      msg.textContent = `Thanks, ${name.split(" ")[0]}. The pit crew will reach out within 48 hours.`;
-      cf.reset();
-    });
-
-    const lf = $("#listForm");
-    lf.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const msg = $(".list__msg");
-      const email = lf.email.value.trim();
-      lf.email.classList.toggle("is-invalid", !validEmail(email));
-      if (!validEmail(email)) { msg.textContent = "That email doesn't look quite right."; return; }
-      if (CONTACT_EMAIL) location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Add me to the list")}&body=${encodeURIComponent(email)}`;
-      msg.textContent = "You're on the list. Watch for the smoke signal.";
-      lf.reset();
-    });
-  }
-
   /* ------------------------------------------------------------------ */
   /* Boot                                                                 */
   /* ------------------------------------------------------------------ */
-  document.body.classList.add("is-loading");
+  const hasLoader = !!$("#loader");
+  if (hasLoader) document.body.classList.add("is-loading");
   $("#year").textContent = new Date().getFullYear();
   renderMenu();
   splitTitle();
@@ -410,14 +385,13 @@
   scrollFx();
   navMobile();
   cursorGlow();
-  forms();
 
   const ready = () => {
-    $("#loader").classList.add("is-done");
+    $("#loader")?.classList.add("is-done");
     document.body.classList.remove("is-loading");
     document.body.classList.add("is-ready");
   };
-  const minDelay = reduceMotion ? 0 : 1500;
+  const minDelay = reduceMotion || !hasLoader ? 0 : 1500;
   const t0 = performance.now();
   const go = () => setTimeout(ready, Math.max(0, minDelay - (performance.now() - t0)));
   if (document.readyState === "complete") go(); else addEventListener("load", go);
